@@ -297,7 +297,7 @@ void convert_elemental_db(void)
 	fwrite = fopen("sql/elemental_db.sql", "w+");
 
 	while (fgets(line, sizeof(line), fread) != NULL) {
-		char *token, *rows[25], buf[1024], write[1024], *pos = buf;
+		char *token, buf[1024], write[1024], *pos = buf;
 
 		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
 			continue;
@@ -310,9 +310,8 @@ void convert_elemental_db(void)
 				pos += sprintf(pos, ",");
 			}
 
-			rows[i] = token;
+			pos += (i == 1 || i == 2) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%s", token);
 			token = strtok(0, ",");
-			pos += (i == 1 || i == 2) ? sprintf(pos, "'%s'", escape_str(rows[i])) : sprintf(pos, "%s", rows[i]);
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO elemental_db VALUES(%s);\n", buf);
@@ -370,9 +369,9 @@ void convert_guild_skill_tree_db(void)
 	FILE *fread, *fwrite;
 	char line[1024], path[256];
 	int count = 0, i;
-	
+
 	sprintf(path, "%s", "db/guild_skill_tree.txt");
-	
+
 	if (!(fread = fopen(path, "r")))
 		return;
 
@@ -408,16 +407,16 @@ void convert_homunculus_db(void)
 	FILE *fread, *fwrite;
 	char line[1024], path[256];
 	int count = 0, i;
-	
+
 	sprintf(path, "%s", "db/homunculus_db.txt");
-	
+
 	if (!(fread = fopen(path, "r")))
 		return;
 
 	fwrite = fopen("sql/homunculus_db.sql", "w+");
 
 	while (fgets(line, sizeof(line), fread) != NULL) {
-		char *token, *rows[49], buf[1024], write[1024], *pos = buf;
+		char *token, buf[1024], write[1024], *pos = buf;
 
 		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
 			continue;
@@ -430,9 +429,8 @@ void convert_homunculus_db(void)
 				pos += sprintf(pos, ",");
 			}
 
-			rows[i] = token;
+			pos += (i == 2) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%s", token);
 			token = strtok(0, ",");
-			pos += (i == 2) ? sprintf(pos, "'%s'", escape_str(rows[i])) : sprintf(pos, "%s", rows[i]);
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO homunculus_db VALUES(%s);\n", buf);
