@@ -13,16 +13,16 @@
 // Macros
 #define ARRAY_SIZE(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
-// Funções de Utilidade
+// FunÃ§Ãµes de Utilidade
 void show_message(int color, const char *msg, ...);
 char *replace_str(char *str, char *orig, char *rep);
 char *escape_str(char *str);
 int explode(char ***arr_ptr, char *str, char delimiter);
 
-// Variáveis de Utilidade
+// VariÃ¡veis de Utilidade
 static unsigned int file_count;
 
-// Funções de Conversão
+// FunÃ§Ãµes de ConversÃ£o
 void convert_abra_db(void);
 void convert_castle_db(void);
 void convert_create_arrow_db(void);
@@ -59,7 +59,7 @@ enum txt_colors {
 	LIGHT_GREEN = 0xA
 };
 
-// Função Inicial
+// FunÃ§Ã£o Inicial
 void main(void) {
 	show_message(GREEN, "                                                                               \n");
 	show_message(GREEN, "                 _           ___  _   _                                        \n");
@@ -190,7 +190,7 @@ int explode(char ***arr_ptr, char *str, char delimiter)
 	return size;
 }
 
-// Retorna uma string ou um array com todas as ocorrências de char *str.
+// Retorna uma string ou um array com todas as ocorrÃªncias de char *str.
 char *replace_str(char *str, char *orig, char *rep)
 {
 	static char buffer[4096];
