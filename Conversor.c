@@ -1,8 +1,8 @@
 /*******************************
-*	brA Conversor TXT para SQL
-*	Autor:		Shiraz
-*	Data:		22/10/2012
-*	Updated:	08/11/2015
+* brA Conversor TXT para SQL
+* Autor:	Shiraz
+* Data:		22/10/2012
+* Updated:	08/11/2015
 ********************************/
 
 #include <stdio.h>
@@ -24,6 +24,12 @@ static unsigned int file_count;
 
 // Funções de Conversão
 void convert_abra_db(void);
+void convert_castle_db(void);
+void convert_create_arrow_db(void);
+void convert_elemental_db(void);
+void convert_elemental_skill_db(void);
+void convert_guild_skill_tree_db(void);
+void convert_homunculus_db(void);
 
 // Tabelas de Cores
 enum txt_colors {
@@ -51,6 +57,12 @@ void main(void) {
 	show_message(GREEN, "                                                                               \n\n");
 	
 	convert_abra_db();
+	convert_castle_db();
+	convert_create_arrow_db();
+	convert_elemental_db();
+	convert_elemental_skill_db();
+	convert_guild_skill_tree_db();
+	convert_homunculus_db();
 	
 	show_message(YELLOW, "Converted files: %d\n", file_count);
 	system("pause");
@@ -130,7 +142,7 @@ int explode(char ***arr_ptr, char *str, char delimiter)
 
 	src = str;
 	dst = (char *)arr + size * sizeof(char *);
-	for (i = 0; i < size; ++i) {
+	for (i = 0; i < size; i++) {
 		if ((end = strchr(src, delimiter)) == NULL)
 			end = src + strlen(src);
 		arr[i] = dst;
@@ -161,14 +173,14 @@ char *replace_str(char *str, char *orig, char *rep)
 }
 
 // Converte o arquivo abra_db.txt para SQL.
-void convert_abra_db()
+void convert_abra_db(void)
 {
 	FILE *fread, *fwrite;
 	char line[1024], path[256];
 	int count = 0, i;
-	
-	sprintf(path, "%s/%s", "db", "abra_db.txt");
-	
+
+	sprintf(path, "%s", "db/abra_db.txt");
+
 	if (!(fread = fopen(path, "r")))
 		return;
 
@@ -181,7 +193,7 @@ void convert_abra_db()
 		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
 			continue;
 
-		for (i = 0; i < 4; ++i) {
+		for (i = 0; i < 4; i++) {
 			rows[i] = token;
 			token = strtok(0, ",");
 		}
@@ -189,7 +201,245 @@ void convert_abra_db()
 		fprintf(fwrite, "REPLACE INTO abra_db VALUES(%d,'%s',%d,%d);\n", atoi(rows[0]), escape_str(rows[1]), atoi(rows[2]), atoi(rows[3]));
 		count++;
 	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo castle_db.txt para SQL.
+void convert_castle_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/castle_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/castle_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token = strtok(line, ",");
+		char *rows[4];
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		for (i = 0; i < 5; i++) {
+			rows[i] = token;
+			token = strtok(0, ",");
+		}
+
+		fprintf(fwrite, "REPLACE INTO castle_db VALUES(%s,'%s','%s','%s',%d);\n", rows[0], escape_str(rows[1]), escape_str(rows[2]), escape_str(rows[3]), atoi(rows[4]));
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", "db/castle_db.txt", count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo create_arrow_db.txt para SQL.
+void convert_create_arrow_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/create_arrow_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/create_arrow_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, *rows[10];
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 11; i++) {
+			rows[i] = (token == NULL) ? "NULL" : token;
+			token = strtok(0, ",");
+		}
+
+		fprintf(fwrite, "REPLACE INTO create_arrow_db VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);\n", rows[0], rows[1], rows[2], rows[3], rows[4], rows[5], rows[6], rows[7], rows[8], rows[9], rows[10]);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", "db/create_arrow_db.txt", count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo elemental_db.txt para SQL.
+void convert_elemental_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/elemental_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/elemental_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, *rows[25], buf[1024], write[1024], *pos = buf;
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 26; i++) {
+			if (i) {
+				pos += sprintf(pos, ",");
+			}
+
+			rows[i] = token;
+			token = strtok(0, ",");
+			pos += (i == 1 || i == 2) ? sprintf(pos, "'%s'", escape_str(rows[i])) : sprintf(pos, "%s", rows[i]);
+		}
+
+		snprintf(write, sizeof(write), "REPLACE INTO elemental_db VALUES(%s);\n", buf);
+		fprintf(fwrite, write);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo elemental_skill_db.txt para SQL.
+void convert_elemental_skill_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/elemental_skill_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/elemental_skill_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, *rows[3];
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 4; i++) {
+			rows[i] = token;
+			token = strtok(0, ",");
+		}
+
+		fprintf(fwrite, "REPLACE INTO elemental_skill_db VALUES(%s,%s,%s,%d);\n", rows[0], rows[1], rows[2], atoi(rows[3]));
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo guild_skill_tree.txt para SQL.
+void convert_guild_skill_tree_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
 	
+	sprintf(path, "%s", "db/guild_skill_tree.txt");
+	
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/guild_skill_tree.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, *rows[11];
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 12; i++) {
+			rows[i] = token;
+			token = strtok(0, ",");
+		}
+
+		fprintf(fwrite, "REPLACE INTO guild_skill_tree VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%d);\n", rows[0], rows[1], rows[2], rows[3], rows[4], rows[5], rows[6], rows[7], rows[8], rows[9], rows[10], atoi(rows[11]));
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo homunculus_db.txt para SQL.
+void convert_homunculus_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+	
+	sprintf(path, "%s", "db/homunculus_db.txt");
+	
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/homunculus_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, *rows[49], buf[1024], write[1024], *pos = buf;
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 50; i++) {
+			if (i) {
+				pos += sprintf(pos, ",");
+			}
+
+			rows[i] = token;
+			token = strtok(0, ",");
+			pos += (i == 2) ? sprintf(pos, "'%s'", escape_str(rows[i])) : sprintf(pos, "%s", rows[i]);
+		}
+
+		snprintf(write, sizeof(write), "REPLACE INTO homunculus_db VALUES(%s);\n", buf);
+		fprintf(fwrite, write);
+		count++;
+	}
+
 	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
 	fclose(fread);
 	fclose(fwrite);
