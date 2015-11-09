@@ -39,6 +39,14 @@ void convert_mob_classchange_db(void);
 void convert_mob_item_ratio_db(void);
 void convert_pet_db(void);
 void convert_produce_db(void);
+void convert_skill_changematerial_db(void);
+void convert_skill_improvise_db(void);
+void convert_skill_reproduce_db(void);
+void convert_spellbook_db(void);
+void convert_quest_db(void);
+void convert_const_db(void);
+void convert_job_db2(void);
+void convert_sc_config(void);
 
 // Tabelas de Cores
 enum txt_colors {
@@ -81,6 +89,14 @@ void main(void) {
 	convert_mob_item_ratio_db();
 	convert_pet_db();
 	convert_produce_db();
+	convert_skill_changematerial_db();
+	convert_skill_improvise_db();
+	convert_skill_reproduce_db();
+	convert_spellbook_db();
+	convert_quest_db();
+	convert_const_db();
+	convert_job_db2();
+	convert_sc_config();
 	
 	show_message(YELLOW, "Converted files: %d\n", file_count);
 	system("pause");
@@ -219,7 +235,7 @@ void convert_abra_db(void)
 			}
 
 			pos += ((i == 1)) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%d", atoi(token));
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO abra_db VALUES(%s);\n", buf);
@@ -262,7 +278,7 @@ void convert_castle_db(void)
 			}
 
 			pos += ((i >= 1 && i <= 3)) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%d", atoi(token));
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO castle_db VALUES(%s);\n", buf);
@@ -305,7 +321,7 @@ void convert_create_arrow_db(void)
 			}
 
 			pos += (token == NULL) ? sprintf(pos, "%s", "NULL") : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO create_arrow_db VALUES(%s);\n", buf);
@@ -348,7 +364,7 @@ void convert_elemental_db(void)
 			}
 
 			pos += (i == 1 || i == 2) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO elemental_db VALUES(%s);\n", buf);
@@ -391,7 +407,7 @@ void convert_elemental_skill_db(void)
 			}
 
 			pos += (i == 3) ? sprintf(pos, "%d", atoi(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO elemental_skill_db VALUES(%s);\n", buf);
@@ -434,7 +450,7 @@ void convert_guild_skill_tree_db(void)
 			}
 
 			pos += (i == 11) ? sprintf(pos, "%d", atoi(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO guild_skill_tree_db VALUES(%s);\n", buf);
@@ -477,7 +493,7 @@ void convert_homunculus_db(void)
 			}
 
 			pos += (i == 2) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO homunculus_db VALUES(%s);\n", buf);
@@ -520,7 +536,7 @@ void convert_homun_skill_tree_db(void)
 			}
 
 			pos += (i == 13) ? sprintf(pos, "%d", atoi(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO homun_skill_tree_db VALUES(%s);\n", buf);
@@ -563,7 +579,7 @@ void convert_mercenary_db(void)
 			}
 
 			pos += ((i == 1 || i == 2)) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO mercenary_db VALUES(%s);\n", buf);
@@ -606,7 +622,7 @@ void convert_mercenary_skill_db(void)
 			}
 
 			pos += (i == 2) ? sprintf(pos, "%d", atoi(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO mercenary_skill_db VALUES(%s);\n", buf);
@@ -649,7 +665,7 @@ void convert_mob_avail_db(void)
 			}
 
 			pos += (token == NULL) ? sprintf(pos, "%s", "NULL") : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO mob_avail VALUES(%s);\n", buf);
@@ -692,7 +708,7 @@ void convert_mob_chat_db(void)
 			}
 
 			pos += (i == 2) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO mob_chat_db VALUES(%s);\n", buf);
@@ -735,7 +751,7 @@ void convert_mob_classchange_db(void)
 			}
 
 			pos += (i == 1) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO mob_classchange_db VALUES(%s);\n", buf);
@@ -778,7 +794,7 @@ void convert_mob_item_ratio_db(void)
 			}
 
 			pos += (token == NULL) ? sprintf(pos, "%s", "NULL") : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO mob_item_ratio_db VALUES(%s);\n", buf);
@@ -826,7 +842,7 @@ void convert_pet_db(void)
 			else
 				pos += (i == 21) ? sprintf(pos, "'{%s'", escape_str(script[2])) : sprintf(pos, "'{%s'", replace_str(escape_str(script[1]), "},", "}"));
 
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO pet_db VALUES(%s);\n", buf);
@@ -869,10 +885,328 @@ void convert_produce_db(void)
 			}
 
 			pos += (token == NULL) ? sprintf(pos, "%s", "NULL") : sprintf(pos, "%s", token);
-			token = strtok(0, ",");
+			token = strtok(NULL, ",");
 		}
 
 		snprintf(write, sizeof(write), "REPLACE INTO produce_db VALUES(%s);\n", buf);
+		fprintf(fwrite, write);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo skill_changematerial_db.txt para SQL.
+void convert_skill_changematerial_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/skill_changematerial_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/skill_changematerial_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, buf[1024], write[1024], *pos = buf;
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 12; i++) {
+			if (i) {
+				pos += sprintf(pos, ",");
+			}
+
+			pos += (token == NULL) ? sprintf(pos, "%s", "NULL") : sprintf(pos, "%d", atoi(token));
+			token = strtok(NULL, ",");
+		}
+
+		snprintf(write, sizeof(write), "REPLACE INTO skill_changematerial_db VALUES(%s);\n", buf);
+		fprintf(fwrite, write);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo skill_improvise_db.txt para SQL.
+void convert_skill_improvise_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/skill_improvise_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/skill_improvise_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, buf[1024], write[1024], *pos = buf;
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 2; i++) {
+			if (i) {
+				pos += sprintf(pos, ",");
+			}
+
+			pos += sprintf(pos, "%d", atoi(token));
+			token = strtok(NULL, ",");
+		}
+
+		snprintf(write, sizeof(write), "REPLACE INTO skill_improvise_db VALUES(%s);\n", buf);
+		fprintf(fwrite, write);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo skill_reproduce_db.txt para SQL.
+void convert_skill_reproduce_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0;
+
+	sprintf(path, "%s", "db/skill_reproduce_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/skill_reproduce_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char write[1024];
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+
+		snprintf(write, sizeof(write), "REPLACE INTO skill_reproduce_db VALUES(%d);\n", atoi(line));
+		fprintf(fwrite, write);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo spellbook_db.txt para SQL.
+void convert_spellbook_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/spellbook_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/spellbook_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, buf[1024], write[1024], *pos = buf;
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 3; i++) {
+			if (i) {
+				pos += sprintf(pos, ",");
+			}
+
+			pos += sprintf(pos, "%d", atoi(token));
+			token = strtok(NULL, ",");
+		}
+
+		snprintf(write, sizeof(write), "REPLACE INTO spellbook_db VALUES(%s);\n", buf);
+		fprintf(fwrite, write);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo quest_db.txt para SQL.
+void convert_quest_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/quest_db.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/quest_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, buf[1024], write[1024], *pos = buf;
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 18; i++) {
+			if (i) {
+				pos += sprintf(pos, ",");
+			}
+
+			pos += (i == 17) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%s", token);
+			token = strtok(NULL, ",");
+		}
+
+		snprintf(write, sizeof(write), "REPLACE INTO quest_db VALUES(%s);\n", buf);
+		fprintf(fwrite, write);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo const.txt para SQL.
+void convert_const_db(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0;
+
+	sprintf(path, "%s", "db/const.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/const_db.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char write[1024], name[1024], val[1024];
+		int type = 0;
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+
+		if(sscanf(line,"%1023[A-Za-z0-9/_],%1023[A-Za-z0-9/_-],%d",name,val,&type)>=2 ||
+		   sscanf(line,"%1023[A-Za-z0-9/_] %1023[A-Za-z0-9/_-] %d",name,val,&type)>=2){
+			if(type)
+				snprintf(write, sizeof(write), "REPLACE INTO const_db VALUES('%s','%s',%d);\n", name, val, type);
+			else
+				snprintf(write, sizeof(write), "REPLACE INTO const_db VALUES('%s','%s',%s);\n", name, val, "NULL");
+			fprintf(fwrite, write);
+			count++;
+		}
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo job_db2.txt para SQL.
+void convert_job_db2(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0;
+
+	sprintf(path, "%s", "db/job_db2.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/job_db2.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+
+		fprintf(fwrite, "REPLACE INTO job_db2 VALUES('%s');\n", line);
+		count++;
+	}
+
+	show_message(LIGHT_GREEN, "File %s successfully converted! rows affected: %d\n", path, count);
+	fclose(fread);
+	fclose(fwrite);
+	file_count++;
+}
+
+// Converte o arquivo sc_config.txt para SQL.
+void convert_sc_config(void)
+{
+	FILE *fread, *fwrite;
+	char line[1024], path[256];
+	int count = 0, i;
+
+	sprintf(path, "%s", "db/sc_config.txt");
+
+	if (!(fread = fopen(path, "r")))
+		return;
+
+	fwrite = fopen("sql/sc_config.sql", "w+");
+
+	while (fgets(line, sizeof(line), fread) != NULL) {
+		char *token, buf[1024], write[1024], *pos = buf;
+
+		if ((line[0] == '/' && line[1] == '/') || line[0] == '\n')
+			continue;
+
+		line[strlen(line)-1] = '\0';
+		token = strtok(line, ",");
+
+		for (i = 0; i < 2; i++) {
+			if (i) {
+				pos += sprintf(pos, ",");
+			}
+
+			pos += (i == 0) ? sprintf(pos, "'%s'", escape_str(token)) : sprintf(pos, "%d", atoi(token));
+			token = strtok(NULL, ",");
+		}
+
+		snprintf(write, sizeof(write), "REPLACE INTO sc_config VALUES(%s);\n", buf);
 		fprintf(fwrite, write);
 		count++;
 	}
